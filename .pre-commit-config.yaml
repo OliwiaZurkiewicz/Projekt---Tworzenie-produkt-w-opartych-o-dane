@@ -1,0 +1,45 @@
+repos:
+        - repo: https://github.com/pre-commit/pre-commit-hooks
+          rev: v4.5.0
+          hooks:
+                  - id: check-added-large-files
+                  - id: check-case-conflict
+                  - id: fix-byte-order-marker
+                  - id: end-of-file-fixer
+                  - id: trailing-whitespace
+                  - id: check-yaml
+                    args: [ "--allow-multiple-documents" ]
+                  - id: check-docstring-first
+        - repo: https://github.com/pre-commit/pygrep-hooks
+          rev: v1.10.0
+          hooks:
+                  - id: python-use-type-annotations
+                    name: check if type annotations are used
+        - repo: https://github.com/PyCQA/autoflake
+          rev: v2.3.1
+          hooks:
+                  - id: autoflake
+                    name: check for unused imports
+                    args: [ "--check", "--quiet", "--recursive", "--remove-all-unused-imports" ]
+        - repo: https://github.com/PyCQA/isort
+          rev: 5.13.2
+          hooks:
+                  - id: isort
+                    name: sort imports
+                    args: [ "--profile", "black", "--settings-path", "pyproject.toml", "--check-only" ]
+        - repo: https://github.com/psf/black
+          rev: 24.4.2
+          hooks:
+                  - id: black
+                    args: [ "--config", "pyproject.toml", "--diff", "--check" ]
+        - repo: https://github.com/pre-commit/mirrors-mypy
+          rev: v1.10.0
+          hooks:
+                  - id: mypy
+                    additional_dependencies: [types-all]
+        - repo: https://github.com/PyCQA/bandit
+          rev: 1.7.8
+          hooks:
+                  - id: bandit
+                    args: [ "-c", "pyproject.toml", "-r", "--silent", "." ]
+                    additional_dependencies: [ "bandit[toml]" ]
