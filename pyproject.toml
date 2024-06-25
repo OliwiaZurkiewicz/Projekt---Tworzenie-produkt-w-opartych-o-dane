@@ -16,6 +16,13 @@ pandas = "^2.2.2"
 dash = "^2.17.1"
 scikit-learn = "^1.5.0"
 
+[tool.poetry.group.dev.dependencies]
+bandit = "^1.7.9"
+black = "^24.4.2"
+autoflake = "^2.3.1"
+isort = "^5.13.2"
+mypy = "^1.10.1"
+
 [tool.black]
 line-length = 120
 target-version = ["py312"]
@@ -28,11 +35,10 @@ default_section = "FIRSTPARTY"
 multi_line_output = 3
 indent = 4
 force_grid_wrap = 0
-line-length = 120
 
 [tool.mypy]
 disallow_untyped_defs = true
-show_error_code = true
+show_error_codes = true
 allow_redefinition = true
 ignore_missing_imports = true
 disable_error_code = ["attr-defined", "override", "arg-type", "union-attr"]
