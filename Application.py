@@ -1,17 +1,17 @@
 from typing import Any
-import plotly.express as px
-import pandas as pd
-from dash import Dash, html, dcc
-from dash import Input, Output, callback
-from dash.dependencies import Input, Output
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.metrics import mean_squared_error
-import pandas as pd
-from sklearn.preprocessing import OneHotEncoder
-import numpy as np
-import pickle
-import plotly.graph_objects as go
+
 import os
+import pickle
+
+import numpy as np
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+import plotly.graph_objs_figure.Figure as Figure
+from dash import Dash, Input, Output, callback, dcc, html
+from dash.dependencies import Input, Output
+from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import OneHotEncoder
 
 app = Dash(__name__, assets_folder="../assets")
 
@@ -19,7 +19,7 @@ dir = os.path.dirname(__file__)
 path = os.path.join(dir, "raw_sales.csv")
 
 
-def import_data(path):
+def import_data(path: str) -> pd.DataFrame:
     df = pd.read_csv(path)
     df["datesold"] = pd.to_datetime(df["datesold"], yearfirst=True)
     df["Year"] = df.datesold.dt.year
@@ -34,12 +34,10 @@ df = import_data(path)
 colors = {"background": "#F5CCB0", "text": "#F57C00"}
 
 
-def preprocessing_data(df):
+def preprocessing_data(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, int]:
     encoder = OneHotEncoder(sparse_output=False)
     one_hot_encoded = encoder.fit_transform(df[["propertyType"]])
-    one_hot_df = pd.DataFrame(
-        one_hot_encoded, columns=encoder.get_feature_names_out(["propertyType"])
-    )
+    one_hot_df = pd.DataFrame(one_hot_encoded, columns=encoder.get_feature_names_out(["propertyType"]))
     df = df.reset_index(drop=True)
     df = pd.concat([df, one_hot_df], axis=1)
     df = df.drop(["propertyType"], axis=1)
@@ -93,21 +91,23 @@ def preprocessing_data(df):
 X_train, Y_train, X_test, Y_test, train_len = preprocessing_data(df)
 
 
-def Decision_Tree_predict(name, X_test, Y_test):
+def Decision_Tree_predict(name: str, X_test: pd.DataFrame, Y_test: pd.DataFrame) -> tuple[np.ndarray, float]:
     pipe = pickle.load(open(name, "rb"))
     predictions = pipe.predict(X_test)
     rmse = float(format(np.sqrt(mean_squared_error(Y_test, predictions)), ".3f"))
     return predictions, rmse
 
 
-def Random_Forest_predict(name, X_test, Y_test):
+def Random_Forest_predict(name: str, X_test: pd.DataFrame, Y_test: pd.DataFrame) -> tuple[np.ndarray, float]:
     pipe = pickle.load(open(name, "rb"))
     predictions = pipe.predict(X_test)
     rmse = float(format(np.sqrt(mean_squared_error(Y_test, predictions)), ".3f"))
     return predictions, rmse
 
 
-def plot_predict(data, train_len, pred, output, input):
+def plot_predict(
+    data: pd.DataFrame, train_len: int, pred: np.ndarray, output: pd.core.series.Series, input: pd.core.series.Series
+) -> Figure:
     fig2 = go.Figure()
     fig2.add_trace(
         go.Scatter(
