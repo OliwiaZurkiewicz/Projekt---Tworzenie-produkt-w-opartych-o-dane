@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  application:
+    container_name: application
+    build:
+      context: ../
+      platforms:
+        - "linux/amd64"
+      dockerfile: dockerfiles/Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8080:8080/tcp
