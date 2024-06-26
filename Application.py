@@ -7,7 +7,6 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import plotly.graph_objs_figure.Figure as Figure
 from dash import Dash, Input, Output, callback, dcc, html
 from dash.dependencies import Input, Output
 from sklearn.metrics import mean_squared_error
@@ -107,7 +106,7 @@ def Random_Forest_predict(name: str, X_test: pd.DataFrame, Y_test: pd.DataFrame)
 
 def plot_predict(
     data: pd.DataFrame, train_len: int, pred: np.ndarray, output: pd.core.series.Series, input: pd.core.series.Series
-) -> Figure:
+) -> Any:
     fig2 = go.Figure()
     fig2.add_trace(
         go.Scatter(
@@ -275,4 +274,4 @@ def update_graph(
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True, host="0.0.0.0", port=8080, use_reloader=True)
