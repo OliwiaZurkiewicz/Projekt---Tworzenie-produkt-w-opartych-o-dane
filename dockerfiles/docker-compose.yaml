@@ -1,13 +1,19 @@
-version: "3.9"
+x-service-builder: &builder
+  context: ../
+  platforms:
+    - "linux/amd64"
+  dockerfile: dockerfiles/Dockerfile
 
 services:
   application:
-    container_name: application
     build:
-      context: ../
-      platforms:
-        - "linux/amd64"
-      dockerfile: dockerfiles/Dockerfile
-    restart: unless-stopped
-    ports:
-      - 8080:8080/tcp
+      target: runtime
+      <<: *builder
+    container_name: application
+    
+
+  application_test:
+    build:
+      target: test
+      <<: *builder
+    container_name: application_test
