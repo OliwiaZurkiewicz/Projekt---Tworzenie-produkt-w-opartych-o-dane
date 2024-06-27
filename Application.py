@@ -1,5 +1,3 @@
-from typing import Any
-
 import os
 import pickle
 
@@ -9,6 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from dash import Dash, Input, Output, callback, dcc, html
 from dash.dependencies import Input, Output
+from plotly.graph_objs._figure import Figure
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import OneHotEncoder
 
@@ -106,7 +105,7 @@ def Random_Forest_predict(name: str, X_test: pd.DataFrame, Y_test: pd.DataFrame)
 
 def plot_predict(
     data: pd.DataFrame, train_len: int, pred: np.ndarray, output: pd.core.series.Series, input: pd.core.series.Series
-) -> Any:
+) -> Figure:
     fig2 = go.Figure()
     fig2.add_trace(
         go.Scatter(
@@ -221,7 +220,7 @@ def update_graph(
     selected_type_value: str,
     dates_selection_value: str,
     selected_method_value: str,
-) -> Any:
+) -> tuple[Figure, Figure]:
     tmp = df.loc[df.loc[:, "bedrooms"].isin(selected_bedrooms_value), :]
     tmp = tmp.loc[tmp.loc[:, "propertyType"].isin(selected_type_value), :]
     tmp = tmp[tmp.loc[:, "Year"] <= dates_selection_value[1]]
