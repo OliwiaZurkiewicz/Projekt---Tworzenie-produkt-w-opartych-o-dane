@@ -23,9 +23,9 @@ jobs:
         run: pip install bandit==1.7.9 black==24.4.2 isort==5.13.2 mypy==1.10.1
       - name: Run bandit check
         run: bandit -c pyproject.toml -r --severity high .
-      - name: Run black check
-        run: black --config pyproject.toml --diff --check .
       - name: Run isort
         run: isort --profile black --settings-path pyproject.toml --check-only .
+      - name: Run black check
+        run: black --config pyproject.toml --diff --check .
       - name: Run mypy
         run: mypy .
