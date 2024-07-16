@@ -1,5 +1,8 @@
 .PHONY: run run-docker test test-docker
 
+lint:
+	@./lint.sh
+
 run:
 	@scripts/run.sh
 
