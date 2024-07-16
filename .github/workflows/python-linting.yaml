@@ -1,0 +1,31 @@
+name: Run lint checks
+
+on:
+  - pull_request
+  - workflow_dispatch
+
+jobs:
+  lint:
+    name: Run lint checks
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.12
+      - name: Install linters
+        run: pip install bandit==1.7.9 black==24.4.2 isort==5.13.2 mypy==1.10.1
+      - name: Run bandit check
+        run: bandit -c pyproject.toml -r --severity high .
+      - name: Run black check
+        run: black --config pyproject.toml --diff --check .
+      - name: Run isort
+        run: isort --profile black --settings-path pyproject.toml --check-only .
+      - name: Run mypy
+        run: mypy .
