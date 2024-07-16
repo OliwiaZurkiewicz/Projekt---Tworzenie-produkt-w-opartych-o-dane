@@ -3,7 +3,7 @@ import os
 import numpy as np
 import pandas as pd
 import pytest
-from Application import (
+from main import (
     Decision_Tree_predict,
     Random_Forest_predict,
     import_data,

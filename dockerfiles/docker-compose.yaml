@@ -10,7 +10,8 @@ services:
       target: runtime
       <<: *builder
     container_name: application
-    
+    ports:
+      - 8080:8080/tcp
 
   application_test:
     build:

@@ -16,16 +16,17 @@ RUN --mount=type=cache,target=/root/.cache/pypoetry/cache \
     && poetry lock --no-update \
     && poetry install --without dev --no-ansi --no-interaction --no-root
 
-COPY ./Application.py /opt/project/
+COPY ./src/main.py /opt/project/
 COPY ./model_DT.pkl /opt/project/
 COPY ./model_FR.pkl /opt/project/
 COPY ./raw_sales.csv /opt/project/
 
 USER 10000
+ENV PYTHONPATH=/opt/project
 
 EXPOSE 8080/tcp
 
-CMD ["python3", "Application.py"]
+CMD ["python3", "main.py"]
 
 FROM runtime AS test
 
@@ -39,6 +40,6 @@ RUN --mount=type=cache,target=/root/.cache/pypoetry/cache \
     && poetry install --no-ansi --no-interaction --no-root
 
 COPY ./test_raw_sales.csv /opt/project/
-COPY ./unit_test.py /opt/project/
+COPY ./tests/unit_test.py /opt/project/
 
 CMD ["pytest", "-v", "."]
