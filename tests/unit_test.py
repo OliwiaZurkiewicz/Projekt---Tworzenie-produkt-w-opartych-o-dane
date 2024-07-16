@@ -9,7 +9,7 @@ from main import (
     import_data,
     plot_predict,
     preprocessing_data,
-    update_graph
+    update_graph,
 )
 from plotly.graph_objs._figure import Figure
 

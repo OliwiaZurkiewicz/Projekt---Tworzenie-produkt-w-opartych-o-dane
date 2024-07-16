@@ -25,19 +25,17 @@ mypy = "^1.10.1"
 pre-commit = "^3.7.1"
 pytest = "^8.2.2"
 
-[tool.black]
-line-length = 120
-target-version = ["py312"]
-
 [tool.isort]
 known_typing = "typing,types,typing_extensions,mypy,mypy_extensions"
 sections = "FUTURE,TYPING,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
-include_trailing_comma = false
 default_section = "FIRSTPARTY"
 multi_line_output = 3
 indent = 4
-force_grid_wrap = 0
 profile = "black"
+
+[tool.black]
+line-length = 120
+target-version = ["py312"]
 
 [tool.mypy]
 disallow_untyped_defs = true
