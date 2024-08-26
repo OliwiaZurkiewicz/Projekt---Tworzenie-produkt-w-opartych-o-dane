@@ -21,7 +21,7 @@ bandit = "^1.7.9"
 black = "^24.8.0"
 autoflake = "^2.3.1"
 isort = "^5.13.2"
-mypy = "^1.11.1"
+mypy = "^1.11.2"
 pre-commit = "^3.8.0"
 pytest = "^8.3.2"
 
